@@ -93,7 +93,9 @@
                     if (attemptNumber <= 3 && attemptNumber > 0) {
                         attemptNumber -= 1;
                         document.getElementById("attempt-left").innerText = attemptNumber
-                    } else if (attemptNumber == 0) {
+                        document.getElementById("pin-success").style.display = "none"
+
+                    } else {
                         document.getElementById("submit-btn").disabled = true;
                         alert("Submit button Disabled. You Excced number of try!!")
                     }
