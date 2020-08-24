@@ -25,23 +25,23 @@
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
-                                <div onclick="pinInputNumber(`button-7`)" id="button-7" class="button">7</div>
-                                <div onclick="pinInputNumber(`button-8`)" id="button-8" class="button">8</div>
-                                <div onclick="pinInputNumber(`button-9`)" id="button-9" class="button">9</div>
+                                <div onclick="pinInputNumber(event)" class="button">7</div>
+                                <div onclick="pinInputNumber(event)" class="button">8</div>
+                                <div onclick="pinInputNumber(event)" class="button">9</div>
                             </div>
                             <div class="calc-button-row">
-                                <div onclick="pinInputNumber(`button-4`)" id="button-4" class="button">4</div>
-                                <div onclick="pinInputNumber(`button-5`)" id="button-5" class="button">5</div>
-                                <div onclick="pinInputNumber(`button-6`)" id="button-6" class="button">6</div>
+                                <div onclick="pinInputNumber(event)" class="button">4</div>
+                                <div onclick="pinInputNumber(event)" class="button">5</div>
+                                <div onclick="pinInputNumber(event)" class="button">6</div>
                             </div>
                             <div class="calc-button-row">
-                                <div onclick="pinInputNumber(`button-1`)" id="button-1" class="button">1</div>
-                                <div onclick="pinInputNumber(`button-2`)" id="button-2" class="button">2</div>
-                                <div onclick="pinInputNumber(`button-3`)" id="button-3" class="button">3</div>
+                                <div onclick="pinInputNumber(event)" class="button">1</div>
+                                <div onclick="pinInputNumber(event)" class="button">2</div>
+                                <div onclick="pinInputNumber(event)" class="button">3</div>
                             </div>
                             <div class="calc-button-row">
                                 <div onclick="removeLastInput()" class="button">
-                                    <</div> <div onclick="pinInputNumber(`button-0`)" id="button-0" class="button">0
+                                    <</div> <div onclick="pinInputNumber(event)" class="button">0
                                 </div>
                                 <div onclick="clearTextBtn()" id='clear-btn' class="button">C</div>
                             </div>
@@ -68,10 +68,11 @@
             }
 
             //readInputValue 
-            function pinInputNumber(button) {
-                const inputNumber = document.getElementById(button).innerText;
+            function pinInputNumber(event) {
+                const inputNumber = event.target.innerText;
                 document.getElementById("pin-pad-input").value += inputNumber
             }
+
 
             //clear inputfield
             function clearTextBtn() {
