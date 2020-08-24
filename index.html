@@ -1,58 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pin Generator</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input id='random-input' class="form-control" type="text">
+                    <button onclick="generatePin()" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input id="pin-pad-input" class="form-control" type="text">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
-                              <div class="button">7</div>
-                              <div class="button">8</div>
-                              <div class="button">9</div>
+                                <div onclick="pinInputNumber(`button-7`)" id="button-7" class="button">7</div>
+                                <div onclick="pinInputNumber(`button-8`)" id="button-8" class="button">8</div>
+                                <div onclick="pinInputNumber(`button-9`)" id="button-9" class="button">9</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">4</div>
-                              <div class="button">5</div>
-                              <div class="button">6</div>
+                                <div onclick="pinInputNumber(`button-4`)" id="button-4" class="button">4</div>
+                                <div onclick="pinInputNumber(`button-5`)" id="button-5" class="button">5</div>
+                                <div onclick="pinInputNumber(`button-6`)" id="button-6" class="button">6</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">1</div>
-                              <div class="button">2</div>
-                              <div class="button">3</div>
+                                <div onclick="pinInputNumber(`button-1`)" id="button-1" class="button">1</div>
+                                <div onclick="pinInputNumber(`button-2`)" id="button-2" class="button">2</div>
+                                <div onclick="pinInputNumber(`button-3`)" id="button-3" class="button">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div class="button"><</div>
-                                <div class="button">0</div>
-                                <div class="button">C</div>
+                                <div onclick="removeLastInput()" class="button">
+                                    <</div> <div onclick="pinInputNumber(`button-0`)" id="button-0" class="button">0
+                                </div>
+                                <div onclick="clearTextBtn()" id='clear-btn' class="button">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <button onclick="submitHandle()" id="submit-btn" type="submit"
+                                    class="submit-btn">Submit</button>
+                                <p class="action-left"> <span id="attempt-left">3</span> try left</p>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="notify-section">
+                <p id="pin-error" class="notify">❌ Pin Didn't Match, Please try again</p>
+                <p id="pin-success" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            </div>
         </div>
-        <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
-        </div>
-    </div>
+
+        <script>
+            //generate random number 
+            function generatePin() {
+                const randomNumber = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById("random-input").value = randomNumber
+            }
+
+            //readInputValue 
+            function pinInputNumber(button) {
+                const inputNumber = document.getElementById(button).innerText;
+                document.getElementById("pin-pad-input").value += inputNumber
+            }
+
+            //clear inputfield
+            function clearTextBtn() {
+                document.getElementById("pin-pad-input").value = '';
+            }
+
+            //submit handle 
+            function submitHandle() {
+                const randomInputValue = document.getElementById("random-input").value
+                const pinInput = document.getElementById("pin-pad-input").value
+
+                if (randomInputValue == "" || pinInput == "") {
+                    alert("Pin can not be empty")
+                } else if (randomInputValue != pinInput) {
+                    document.getElementById("pin-error").style.display = "block"
+                    document.getElementById("pin-success").style.display
+
+                    let attemptNumber = document.getElementById("attempt-left").innerText
+                    if (attemptNumber <= 3 && attemptNumber > 0) {
+                        attemptNumber -= 1;
+                        document.getElementById("attempt-left").innerText = attemptNumber
+                    } else if (attemptNumber == 0) {
+                        document.getElementById("submit-btn").disabled = true;
+                        alert("Submit button Disabled. You Excced number of try!!")
+                    }
+                    clearInputField()
+
+                } else if (randomInputValue == pinInput) {
+                    document.getElementById("pin-success").style.display = "block"
+                    document.getElementById("pin-error").style.display = "none"
+                    clearInputField()
+                }
+            }
+
+            //clear input field
+            function clearInputField() {
+                document.getElementById("random-input").value = ""
+                document.getElementById("pin-pad-input").value = ""
+            }
+
+            //back arrow clear one digit at once 
+            function removeLastInput() {
+                const currentInput = document.getElementById("pin-pad-input").value;
+                for (let i = 0; i < currentInput.length; i++) {
+                    let updatedInput = currentInput.slice(0, -1)
+                    document.getElementById("pin-pad-input").value = updatedInput
+                }
+            }
+        </script>
 </body>
+
 </html>
